@@ -1,6 +1,34 @@
-
+import { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { AuthContextCurrent } from "./../Context/AuthContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase.config";
 
 const Navbar = () => {
+  const { user } = useContext(AuthContextCurrent);
+  const navLink = (
+    <>
+      <li>
+        <NavLink to={"/"}>Home</NavLink>
+      </li>
+
+      <li>
+        <NavLink to={"/login"}>Login</NavLink>
+      </li>
+      
+      <li>
+        <NavLink to={"/cart"}>Cart</NavLink>
+      </li>
+
+      {
+        user &&       
+        <li>
+        <NavLink to={"/bookings"}>My Bookings</NavLink>
+      </li>
+      }      
+    </>
+  );
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -25,52 +53,21 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Item 3</a>
-            </li>
+            {navLink}
           </ul>
         </div>
         <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li tabIndex={0}>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
+        <ul className="menu menu-horizontal px-1">{navLink}</ul>
       </div>
+
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {user ? (
+          <a className="btn" onClick={() => signOut(auth)}>SignOut</a>
+        ) : (
+          <button className="btn">Sign In</button>
+        )}
       </div>
     </div>
   );

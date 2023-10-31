@@ -9,18 +9,17 @@ const RegisterForm = () => {
     const handleRegistration = (e) =>{
         e.preventDefault();
 
-        const form = e.target ;
+        const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
         const name = form.name.value;
         const url = form.url.value;
-        console.log(email, password, name, url);
 
         emailRegistration(email, password)
         .then(user =>{
             const currentUser = user.user;
             console.log(currentUser);
-
+            
             updateProfile(currentUser, {
                 displayName: name, 
                 photoURL: url
@@ -33,7 +32,10 @@ const RegisterForm = () => {
     return (
         <div>
             <form className="border md:w-1/2 md:p-10 rounded-lg mx-auto my-10 space-y-3 flex flex-col items-center" onSubmit={handleRegistration}>
+                <div>
                 <h1 className="text-3xl font-bold text-center">Register Form</h1>
+                <div className="h-2 w-0 hover:w-full bg-yellow-400"></div>
+                </div>
                 <div className="form-control w-full">
                     <label>Name</label>
                     <input type="text" name="name" id="" className="input input-bordered" />
